@@ -1,9 +1,12 @@
 using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace DotnetAssessmentSocialMedia.Data.Entities
 {
     public class User
     {
+        [Key]
         public int Id { get; set; }
         
         public Profile Profile { get; set; }

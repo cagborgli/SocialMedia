@@ -9,11 +9,17 @@ namespace DotnetAssessmentSocialMedia
         public AutoMapperProfile()
         {
             CreateMap<CreateUserDto, User>()
-                .ForAllOtherMembers(m => m.Ignore());
-            
+                 .ForMember(dest => dest.Credentials, opt => opt.MapFrom(src => src.Credentials))
+                 .ForMember(dest => dest.Profile, opt => opt.MapFrom(src => src.Profile))
+                 .ForAllOtherMembers(opts => opts.Ignore());
+
             CreateMap<Credentials, CredentialsDto>();
             
             CreateMap<Profile, ProfileDto>();
+
+            CreateMap<Tweet, TweetDto>();
+
+            CreateMap<HashTag, HashTagDto>();
             
             CreateMap<User, UserResponseDto>()
                 .ForMember(

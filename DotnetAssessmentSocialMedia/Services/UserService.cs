@@ -23,19 +23,6 @@ namespace DotnetAssessmentSocialMedia.Services
             _logger = logger;
         }
 
-        public User GetByUsername(string username)
-        {
-            var user = _context.Users.SingleOrDefault(u => u.Credentials.Username == username);
-
-            // If user doesn't exists or is deleted, throw UserNotFoundException
-            if (user == null || user.Deleted)
-            {
-                throw new UserNotFoundException();
-            }
-
-            return user;
-        }
-
         public IEnumerable<User> GetAll()
         {
             // Find all non-delete users
@@ -46,6 +33,19 @@ namespace DotnetAssessmentSocialMedia.Services
             }
 
             return users;
+        }
+
+        public User GetByUsername(string username)
+        {
+            var user = _context.Users.SingleOrDefault(u => u.Credentials.Username == username);
+      
+            // If user doesn't exists or is deleted, throw UserNotFoundException
+            if (user == null || user.Deleted)
+            {
+                throw new UserNotFoundException();
+            }
+
+            return user;
         }
 
         public User CreateUser(User user)
@@ -76,10 +76,8 @@ namespace DotnetAssessmentSocialMedia.Services
 
         public User DeleteUser(string username, CredentialsDto credentials)
         {
-            // Get user if username matches and user is not deleted
-            var user = _context.Users
-                .SingleOrDefault(u => u.Credentials.Username == username
-                                      && !u.Deleted);
+            
+            var user = GetUser(username);
 
             if (user == null)
             {
@@ -93,8 +91,56 @@ namespace DotnetAssessmentSocialMedia.Services
             }
 
             user.Deleted = true;
+            _context.Users.Update(user);
             _context.SaveChanges();
             return user;
+        }
+
+        public User UpdateProfile(User user, string username)
+        {
+            var Auser = GetUser(username);
+            return user;
+        }
+
+        public void Follow(string username, CredentialsDto credentials)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Unfollow(string useername, CredentialsDto credentials)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Tweet> GetTweets(string username)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Tweet> Feed(string username)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Tweet> Mentions(string username)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<User> Followers(string username)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<User> Following(string username)
+        {
+            throw new NotImplementedException();
+        }
+
+        // Get user if username matches and user is not deleted
+        public User GetUser(string username)
+        {
+           return  _context.Users.SingleOrDefault(u => u.Credentials.Username == username && !u.Deleted);
         }
     }
 }

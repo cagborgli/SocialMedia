@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DotnetAssessmentSocialMedia.Controllers;
 using DotnetAssessmentSocialMedia.Data;
 using DotnetAssessmentSocialMedia.Exception;
 using DotnetAssessmentSocialMedia.Services;
@@ -44,6 +45,9 @@ namespace DotnetAssessmentSocialMedia
 
             // Add dependencies to IoC container
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<ITagService, TagService>();
+            services.AddTransient<ITweetService, TweetService>();
+            services.AddTransient<IValidateService, ValidateService>();
 
             // Seeder used in Program.cs for development
             services.AddScoped<Seeder>();
@@ -70,8 +74,8 @@ namespace DotnetAssessmentSocialMedia
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "SocialMedia v1");
                 c.RoutePrefix = "api";
+
             });
-            
             app.UseMvc();
         }
     }
